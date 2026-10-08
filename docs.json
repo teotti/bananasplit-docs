@@ -5,11 +5,7 @@
   "colors": {
     "primary": "#7b260f",
     "light": "#ffe66f",
-    "dark": "#7b260f",
-    "background": {
-      "light": "#fafafa",
-      "dark": "#1a1a1a"
-    }
+    "dark": "#7b260f"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -94,8 +90,5 @@
   },
   "seo": {
     "indexHiddenPages": false
-  },
-  "integrations": {
-    "llmsTxt": true
   }
 }
