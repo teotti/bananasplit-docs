@@ -1,34 +1,70 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "theme": "quill",
+  "name": "BananaSplit",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#7b260f",
+    "light": "#ffe66f",
+    "dark": "#7b260f",
+    "background": {
+      "light": "#fafafa",
+      "dark": "#1a1a1a"
+    }
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
       {
-        "group": "Getting Started",
+        "group": "Getting started",
         "pages": [
           "index",
           "quickstart"
+        ]
+      },
+      {
+        "group": "CLI",
+        "pages": [
+          "cli/overview",
+          "cli/installation",
+          "cli/authentication",
+          "cli/commands",
+          "cli/output-formats"
+        ]
+      },
+      {
+        "group": "Agent integration",
+        "pages": [
+          "agents/overview",
+          "agents/skill-installation",
+          "agents/supported-agents",
+          "agents/example-prompts"
+        ]
+      },
+      {
+        "group": "QR Code API",
+        "pages": [
+          "qr-code/overview",
+          "qr-code/endpoints",
+          "qr-code/examples"
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "CLI",
+          "href": "/cli/overview",
+          "icon": "terminal"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Agents",
+          "href": "/agents/overview",
+          "icon": "robot"
+        },
+        {
+          "anchor": "QR Code API",
+          "href": "/qr-code/overview",
+          "icon": "qrcode"
         }
       ]
     }
@@ -40,14 +76,14 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:support@mintlify.com"
+        "label": "App",
+        "href": "https://bananasplit.net"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Get the app",
+      "href": "https://bananasplit.net"
     }
   },
   "contextual": {
@@ -56,17 +92,20 @@
       "view",
       "chatgpt",
       "claude",
-      "perplexity",
-      "mcp",
       "cursor",
-      "vscode"
+      "mcp"
     ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://bananasplit.net",
+      "github": "https://github.com/teotti/banana-cli"
     }
+  },
+  "seo": {
+    "indexHiddenPages": false
+  },
+  "integrations": {
+    "llmsTxt": true
   }
 }

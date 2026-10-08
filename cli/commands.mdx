@@ -1,0 +1,144 @@
+---
+title: Commands reference
+description: Full list of BananaSplit CLI commands with examples.
+---
+
+## Account
+
+```bash
+banana login           # Sign in through browser
+banana logout          # Sign out and revoke credentials
+banana me              # Show your account info
+banana doctor          # Check installation and auth status
+banana version         # Show CLI version
+banana upgrade         # Update to latest version
+banana uninstall       # Remove CLI and credentials
+```
+
+## Balances
+
+```bash
+banana balance         # Summary of what you owe / are owed
+banana balances        # Detailed balance breakdown
+```
+
+## Friends
+
+```bash
+banana friends         # List your friends
+```
+
+## Groups
+
+```bash
+banana groups                        # List your groups
+banana groups get "Lisbon trip"      # Group details
+banana groups members "Lisbon trip"  # List members and their splits
+banana groups activities Lisbon      # Activity feed for a group
+banana groups activities Lisbon --search dinner  # Search activities
+
+banana groups create --name "Lisbon trip" --currency EUR \
+  --type travel --member Ana
+```
+
+## Expenses
+
+### List and search
+
+```bash
+banana expenses list                           # List expenses
+banana expenses list --sort amount --direction desc --limit 10
+banana expenses list --recurring               # Only recurring
+banana expenses list --no-recurring            # Exclude recurring
+banana expenses list --json                    # JSON output with pagination
+```
+
+In interactive terminals, listing opens a searchable browser. Press `Enter` to view details, `Esc` to return, `q` to quit.
+
+### Get, add, edit, delete
+
+```bash
+banana expenses get EXPENSE_ID
+banana expenses delete EXPENSE_ID
+banana expenses restore EXPENSE_ID
+
+banana expenses add --title "Dinner" --amount 42 --currency EUR \
+  --paid-by me --date 2026-09-01 --group "Lisbon trip" \
+  --split-type custom --split me=22 --split Ana=20 --notify-me
+
+banana expenses edit EXPENSE_ID --title "Chinese dinner"
+banana expenses edit EXPENSE_ID --amount 60 --split me=30 --split Ana=30
+banana expenses edit EXPENSE_ID --group "Lisbon trip"
+banana expenses edit EXPENSE_ID '{"description":null}'
+```
+
+### Date formats
+
+`--date` accepts `YYYY-MM-DD` or `DD-MM-YYYY`, with optional time after `T`:
+
+```bash
+--date 2026-09-16                    # Midnight UTC
+--date 2026-09-16T21:20:00           # UTC time
+--date 2026-09-16T21:20:00+02:00     # With timezone offset
+```
+
+### Splits
+
+Direct expenses require at least one `--split WHO=AMOUNT`. Group expenses can omit `--split` to use the group's default.
+
+```bash
+--split me=22 --split Ana=20         # Custom split
+--split-type equal                   # Equal split (recalculates on amount change)
+```
+
+## Payments
+
+```bash
+banana payments get PAYMENT_ID
+banana payments restore PAYMENT_ID
+
+banana payments add --amount 20 --currency EUR \
+  --from me --to Ana --date 2026-09-01 \
+  --description "Settle up"
+```
+
+## Currencies
+
+```bash
+banana currencies      # List available currencies
+```
+
+## Raw JSON input
+
+Create commands also accept raw JSON:
+
+```bash
+banana groups create '{"name":"Lisbon trip","currencyId":"CURRENCY_ID"}'
+banana expenses add '{"title":"Dinner","amount":"42","currencyId":"CURRENCY_ID",...}'
+banana payments add '{"amount":"20","currencyId":"CURRENCY_ID",...}'
+```
+
+This form takes IDs directly instead of names.
+
+## Agent skill
+
+```bash
+banana skill install           # Install for all detected agents
+banana skill install --agent codex
+banana skill install --list    # Show supported agents
+banana skill install --dir ~/.config/agent/skills
+banana skill install --force   # Replace modified skill
+
+banana skill uninstall         # Remove from all agents
+banana skill uninstall --agent claude
+```
+
+## Help
+
+Every command has its own help page:
+
+```bash
+banana --help
+banana expenses --help
+banana expenses edit --help
+```

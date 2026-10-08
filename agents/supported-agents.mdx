@@ -1,0 +1,69 @@
+---
+title: Supported agents
+description: AI agents compatible with the BananaSplit skill.
+---
+
+The BananaSplit skill works with any agent that has shell access and can run CLI commands.
+
+## Officially supported
+
+These agents have pre-configured skill installation paths:
+
+| Agent | Install command | Config directory |
+|-------|----------------|------------------|
+| Claude Code | `banana skill install --agent claude` | `~/.claude/` or `$CLAUDE_CONFIG_DIR` |
+| Codex | `banana skill install --agent codex` | `~/.codex/` or `$CODEX_HOME` |
+| Cursor | `banana skill install --agent cursor` | `~/.cursor/` |
+| Gemini CLI | `banana skill install --agent gemini` | `~/.config/gemini/` |
+| opencode | `banana skill install --agent opencode` | `~/.config/opencode/` |
+
+Running `banana skill install` without `--agent` installs for all detected agents.
+
+## Other shell-enabled agents
+
+Any agent with shell access can use BananaSplit. Install the skill to a custom directory:
+
+```bash
+banana skill install --dir /path/to/agent/skills
+```
+
+Or view and manually add the skill:
+
+```bash
+banana skill install --print
+```
+
+## What agents need
+
+For the skill to work, the agent needs:
+
+1. **Shell access** — ability to run CLI commands
+2. **Skill loading** — reads skill files from its config directory
+3. **JSON parsing** — understands `--json` output (recommended)
+
+## Agent capabilities
+
+With the skill installed, agents can:
+
+| Capability | CLI command | Agent understands |
+|------------|-------------|-------------------|
+| Check balances | `banana balance --json` | Who owes whom, amounts |
+| Add expenses | `banana expenses add ...` | Splits, currencies, dates |
+| Record payments | `banana payments add ...` | Settlements between people |
+| List expenses | `banana expenses list --json` | Pagination, filtering |
+| Manage groups | `banana groups ...` | Members, defaults, activity |
+| Search | `banana expenses list --search ...` | Finding specific expenses |
+
+## Testing the integration
+
+After installing and signing in:
+
+```bash
+banana doctor
+```
+
+Should show:
+- `ok` for authentication
+- `ok` for skill version match
+
+Then start a new agent session and try: **"What do I owe on BananaSplit?"**

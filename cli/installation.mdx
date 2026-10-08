@@ -1,0 +1,83 @@
+---
+title: Installation
+description: Install the BananaSplit CLI on macOS, Linux, or Windows.
+---
+
+## Standalone binary
+
+No runtime required. Downloads are verified against published SHA-256 checksums.
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh | sh
+    ```
+  </Tab>
+  <Tab title="Windows PowerShell">
+    ```powershell
+    irm https://github.com/teotti/banana-cli/releases/latest/download/install.ps1 | iex
+    ```
+  </Tab>
+</Tabs>
+
+## npm / Bun package
+
+If you have [Bun](https://bun.sh) or Node.js:
+
+```bash
+bun install -g @bananasplitapp/cli
+# or
+npm install -g @bananasplitapp/cli
+```
+
+## Custom install location
+
+Set `BANANA_INSTALL_DIR` to choose where the binary goes:
+
+```bash
+BANANA_INSTALL_DIR=~/bin curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh | sh
+```
+
+## Specific version
+
+Install a specific release instead of latest:
+
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh \
+      | BANANA_VERSION=v0.1.0 sh
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    $env:BANANA_VERSION = "v0.1.0"
+    irm https://github.com/teotti/banana-cli/releases/latest/download/install.ps1 | iex
+    ```
+  </Tab>
+</Tabs>
+
+## Verify installation
+
+```bash
+banana --version
+banana doctor
+```
+
+`banana doctor` checks the installation, API connectivity, and whether you're signed in.
+
+## Upgrade
+
+```bash
+banana upgrade
+```
+
+Standalone installs upgrade in place. Bun/npm installs go through the package manager.
+
+## Uninstall
+
+```bash
+banana uninstall
+```
+
+Removes the CLI and revokes your stored login. The agent skill is listed but left alone.

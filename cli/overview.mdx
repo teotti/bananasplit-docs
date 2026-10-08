@@ -1,0 +1,60 @@
+---
+title: CLI overview
+description: Standalone access to the BananaSplit API for terminals and agents.
+---
+
+The BananaSplit CLI gives you full access to expense tracking from any terminal. It works for both human users and shell-enabled AI agents.
+
+## What you can do
+
+- **Track expenses** — add, edit, list, and delete expenses across groups and friends
+- **Record payments** — log settlements between people
+- **Check balances** — see what you owe and what's owed to you
+- **Manage groups** — create groups, add members, configure splits
+- **Browse activity** — search expenses, view history, explore spending
+
+## How it works
+
+The CLI authenticates through your browser using device approval. No passwords or API tokens to manage. Once signed in, credentials are stored securely:
+
+- **macOS** — system keychain
+- **Linux / Windows** — encrypted file at `~/.local/share/banana/credentials.json`
+
+Data syncs with the BananaSplit iOS, Android, and web apps.
+
+## Output formats
+
+Commands print human-readable output by default. Use `--json` for structured output (ideal for agents) or `--raw` for the complete API response.
+
+```bash
+banana balance              # human-readable
+banana balance --json       # structured JSON
+banana groups get Trip --raw  # full API response
+```
+
+## Naming things
+
+Currencies, groups, and people can be referenced by name, code, or prefix:
+
+```bash
+banana groups get Lisbon        # matches "Lisbon trip"
+banana expenses add --paid-by me --split Ana=20
+banana expenses list --currency EUR
+```
+
+Ambiguous names are reported rather than guessed.
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/cli/installation">
+    Install on macOS, Linux, or Windows.
+  </Card>
+  <Card title="Authentication" icon="key" href="/cli/authentication">
+    How login and credential storage work.
+  </Card>
+  <Card title="Commands" icon="terminal" href="/cli/commands">
+    Full command reference with examples.
+  </Card>
+  <Card title="Output formats" icon="code" href="/cli/output-formats">
+    JSON, raw, and human-readable output.
+  </Card>
+</CardGroup>

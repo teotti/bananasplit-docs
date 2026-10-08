@@ -1,0 +1,59 @@
+---
+title: QR Code API
+description: Generate print-ready QR codes programmatically. No authentication required.
+---
+
+The BananaSplit QR Code API creates deterministic, print-ready QR codes from developer tools or AI agent workflows.
+
+## Features
+
+- **No authentication** — stateless, no API key required
+- **No watermarks** — clean output for any use
+- **No scan limits** — codes work forever
+- **Multiple formats** — SVG for print, PNG for preview, JSON for both
+- **Full customization** — colors, corners, logo options
+
+## Supported QR types
+
+| Type | Content |
+|------|---------|
+| `url` | Website links |
+| `wifi` | Network credentials |
+| `vcard` | Contact cards |
+| `email` | Pre-filled email composition |
+| `sms` | Pre-filled SMS messages |
+| `text` | Plain text |
+
+## Quick example
+
+Generate a URL QR code:
+
+```bash
+curl "https://bananasplit.net/api/qr-code?type=url&url=https://example.com&format=svg"
+```
+
+Returns a print-ready SVG.
+
+## Base URL
+
+```
+https://bananasplit.net/api/qr-code
+```
+
+## Rate limits
+
+- **60 requests per minute** per caller per edge location
+- Respect `Retry-After` header on 429 responses
+
+## Privacy
+
+Payloads are not stored. The API is stateless — nothing is logged beyond standard HTTP request info.
+
+<CardGroup cols={2}>
+  <Card title="Endpoints" icon="link" href="/qr-code/endpoints">
+    Full API reference with parameters.
+  </Card>
+  <Card title="Examples" icon="code" href="/qr-code/examples">
+    Code examples for common use cases.
+  </Card>
+</CardGroup>

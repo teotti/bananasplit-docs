@@ -1,0 +1,40 @@
+# BananaSplit
+
+> Split expenses with friends. The expense tracking layer for humans and AI agents.
+
+BananaSplit tracks shared expenses across vacations, roommates, couples, and group events. This documentation covers the CLI, agent integrations, and QR Code API.
+
+## CLI
+
+Install: `curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh | sh`
+Sign in: `banana login`
+Check balances: `banana balance`
+Add expense: `banana expenses add --title "Dinner" --amount 42 --currency EUR --paid-by me --split me=21 --split Ana=21`
+
+Use `--json` for structured output. Use names instead of IDs for currencies, groups, and people.
+
+## Agent Integration
+
+Install skill: `npx skills add teotti/banana-cli --skill banana --global`
+Or after CLI: `banana skill install`
+
+Supported: Claude Code, Codex, Cursor, Gemini CLI, opencode, any shell-enabled agent.
+
+## QR Code API
+
+Base URL: https://bananasplit.net/api/qr-code
+No auth required. Stateless. 60 requests/minute.
+
+Types: url, wifi, vcard, email, sms, text
+Formats: svg, png, json
+
+Example: `curl "https://bananasplit.net/api/qr-code?type=url&url=https://example.com&format=svg"`
+
+## Links
+
+- Docs: https://docs.bananasplit.net
+- CLI: https://docs.bananasplit.net/cli/overview
+- Agents: https://docs.bananasplit.net/agents/overview
+- QR Code API: https://docs.bananasplit.net/qr-code/overview
+- App: https://bananasplit.net
+- GitHub: https://github.com/teotti/banana-cli

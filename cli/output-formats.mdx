@@ -1,0 +1,81 @@
+---
+title: Output formats
+description: JSON, raw, and human-readable output from the CLI.
+---
+
+## Default output
+
+Commands print human-readable output by default. Tables are aligned, details show as `Label: value` blocks, and colors adapt to light and dark terminals.
+
+```bash
+banana balance
+```
+
+```
+You owe Ana €21.00
+João owes you €15.50
+```
+
+## JSON output
+
+Use `--json` for structured output ideal for agents and scripts:
+
+```bash
+banana balance --json
+```
+
+```json
+{
+  "owed": [{"name": "Ana", "amount": "21.00", "currency": "EUR"}],
+  "owedToYou": [{"name": "João", "amount": "15.50", "currency": "EUR"}]
+}
+```
+
+The flag can appear before or after the command:
+
+```bash
+banana --json groups list --limit 10
+banana groups get Lisbon --json
+```
+
+## Raw output
+
+Use `--raw` for the complete API response:
+
+```bash
+banana groups get Lisbon --raw
+```
+
+Returns the full payload including all fields, metadata, and nested objects.
+
+## Pagination
+
+List commands return paginated results. In JSON output, responses include:
+
+```json
+{
+  "items": [...],
+  "hasMore": true,
+  "nextCursor": "abc123"
+}
+```
+
+Use `--cursor` to fetch the next page:
+
+```bash
+banana expenses list --cursor abc123 --json
+```
+
+In interactive terminals, the browser loads more items as you scroll. Press `↓` at the end to load the next page.
+
+## Error output
+
+Errors go to stderr:
+
+- Human mode: `Error: MESSAGE`
+- JSON mode: `{"error": "...", "code": "..."}`
+- Raw mode: Full API error body when available
+
+## Color
+
+Colors are dropped when output is not a TTY or `NO_COLOR` is set.

@@ -1,33 +1,62 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
+# BananaSplit Documentation
 
-# Documentation project instructions
+This is the documentation site for BananaSplit, built on [Mintlify](https://mintlify.com).
 
-## About this project
+## About BananaSplit
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
-- Pages are MDX files with YAML frontmatter
-- Configuration lives in `docs.json`
-- Use the Mintlify MCP server, `https://mcp.mintlify.com`, to edit content and settings via MCP
-- Use the Mintlify docs MCP server, `https://www.mintlify.com/docs/mcp`, to query information about using Mintlify via MCP
+BananaSplit is an expense tracking app for splitting costs with friends across vacations, roommates, couples, and group events. It provides:
+
+- **CLI** — terminal access to expenses, balances, groups, and payments
+- **Agent skill** — AI agents can manage expenses via shell commands
+- **QR Code API** — generate QR codes programmatically (no auth required)
+
+## Project structure
+
+```
+/                     # Root pages (index, quickstart)
+/cli/                 # CLI documentation
+/agents/              # Agent integration guides
+/qr-code/             # QR Code API reference
+docs.json             # Mintlify configuration
+llms.txt              # Agent-friendly summary
+```
 
 ## Terminology
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+- **expense** — a cost to be split among people
+- **payment** — a settlement between two people
+- **group** — a collection of people sharing expenses (trips, roommates, etc.)
+- **split** — how an expense is divided among participants
+- **balance** — what someone owes or is owed
 
-## Style preferences
+## Style
 
-{/* Add any project-specific style rules below */}
+- Casual, friendly tone ("no awkwardness, just good times")
+- Active voice, second person ("you")
+- Concise sentences
+- Code for commands, file names, and technical references
+- Names over IDs in examples
 
-- Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
+## Brand colors
 
-## Content boundaries
+- Primary: `#7b260f` (warm brown)
+- Accent: `#ffe66f` (banana yellow)
+- Background: `#fafafa`
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+## Content scope
+
+Document:
+- CLI installation, authentication, and all commands
+- Agent skill installation and usage
+- QR Code API endpoints and examples
+
+Do not document:
+- Internal API endpoints (use CLI instead)
+- Mobile app internals
+- Admin features
+
+## Mintlify tools
+
+- Use the Mintlify MCP server at `https://mcp.mintlify.com` for content editing
+- Use the Mintlify docs MCP server at `https://www.mintlify.com/docs/mcp` for Mintlify features
+- Install the Mintlify skill: `npx skills add https://mintlify.com/docs`

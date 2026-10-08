@@ -1,0 +1,65 @@
+---
+title: Authentication
+description: How BananaSplit CLI login and credential storage work.
+---
+
+## Sign in
+
+```bash
+banana login
+```
+
+The CLI prints a short code and verification URL, then opens your browser. Confirm the code matches what the browser shows, approve the login, and you're authenticated.
+
+On headless machines or SSH sessions, open the printed URL on another device and confirm the code manually.
+
+## Credential storage
+
+Credentials are stored per API origin:
+
+| Platform | Location |
+|----------|----------|
+| **macOS** | System keychain via `/usr/bin/security` |
+| **Linux** | `~/.local/share/banana/credentials.json` (mode 0600) |
+| **Windows** | `~/.local/share/banana/credentials.json` |
+
+On macOS, credentials go through Apple's security binary so they survive CLI upgrades without prompting for keychain access. Set `BANANASPLIT_NO_KEYCHAIN=1` to use the file store instead.
+
+## Sign out
+
+```bash
+banana logout
+```
+
+Revokes the stored refresh token before deleting the local credential. The last access token may remain valid server-side for up to 15 minutes, but it can't be refreshed.
+
+## Environment variables
+
+| Variable | Effect |
+|----------|--------|
+| `BANANASPLIT_API_URL` | API base URL (default: `https://api.bananasplit.net`) |
+| `BANANASPLIT_AUTH_URL` | Auth base URL when auth runs at a separate origin |
+| `BANANASPLIT_NO_KEYCHAIN` | Use file store on macOS instead of keychain |
+| `BANANA_INSTALL_DIR` | Where the install script puts the binary |
+| `BANANA_VERSION` | Install a specific release |
+| `NO_COLOR` | Disable colored output |
+
+## Local development
+
+To use a local deployment:
+
+```bash
+export BANANASPLIT_API_URL="http://localhost:8080"
+export BANANASPLIT_AUTH_URL="http://localhost:8081/api"
+banana login
+```
+
+Non-loopback URLs must use HTTPS.
+
+## Check status
+
+```bash
+banana doctor
+```
+
+Reports whether you're signed in, which API you're talking to, and whether the skill matches the CLI version. Each check is `ok`, `warn`, or `fail`.

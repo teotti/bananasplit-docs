@@ -1,0 +1,91 @@
+---
+title: Skill installation
+description: Install the BananaSplit skill for your AI agent.
+---
+
+## Option 1: Skills CLI
+
+If you have the [Skills CLI](https://github.com/vercel-labs/skills):
+
+```bash
+npx skills add teotti/banana-cli --skill banana --global
+```
+
+Start a new agent session. The skill guides your agent through installing the CLI if needed.
+
+## Option 2: From the CLI
+
+After installing the BananaSplit CLI:
+
+```bash
+banana skill install
+```
+
+This automatically installs for Claude Code, Codex, Cursor, Gemini CLI, and opencode when their directories are present.
+
+## Choose specific agents
+
+```bash
+banana skill install --agent codex
+banana skill install --agent claude --agent cursor
+banana skill install --all
+banana skill install --list   # Show supported agents
+```
+
+`--agent` works even before an agent's directory exists.
+
+## Custom directory
+
+```bash
+banana skill install --dir ~/.config/agent/skills
+```
+
+## Environment variables
+
+These are honored:
+
+- `CLAUDE_CONFIG_DIR`
+- `CODEX_HOME`
+- `XDG_CONFIG_HOME`
+
+## Updating the skill
+
+Running install again leaves an identical skill alone. If the skill differs (you edited it), it's preserved. Use `--force` to replace with the bundled version:
+
+```bash
+banana skill install --force
+```
+
+## View the skill
+
+Print without installing:
+
+```bash
+banana skill install --print
+```
+
+## Uninstall
+
+```bash
+banana skill uninstall                 # All agents
+banana skill uninstall --agent codex   # Specific agent
+banana skill uninstall --force         # Replace edited skills
+```
+
+## Check status
+
+```bash
+banana doctor
+```
+
+Reports whether installed skills match the CLI version.
+
+## Sign in (required)
+
+After installing the skill, sign in to your BananaSplit account:
+
+```bash
+banana login
+```
+
+The agent uses your stored credentials. You sign in once; the agent handles the rest.
