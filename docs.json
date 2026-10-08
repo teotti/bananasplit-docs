@@ -86,16 +86,6 @@
       "href": "https://bananasplit.net"
     }
   },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "cursor",
-      "mcp"
-    ]
-  },
   "footer": {
     "socials": {
       "website": "https://bananasplit.net",
