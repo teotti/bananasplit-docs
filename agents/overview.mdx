@@ -1,21 +1,130 @@
 ---
 title: Agent integration
-description: Connect your AI agent to BananaSplit for expense tracking.
+description: Set up BananaSplit with your AI agent from scratch.
 ---
 
-BananaSplit is the expense tracking layer for AI agents. Your agent can add expenses, record payments, check balances, and manage groups through the CLI.
+Connect your AI agent to BananaSplit for expense tracking. This guide covers everything from installation to your first expense.
 
-## How it works
+## Step 1: Install the CLI
 
-1. **Install the skill** — one command adds BananaSplit capabilities to your agent
-2. **You sign in** — run `banana login` once in your terminal (not the agent)
-3. **Agent operates** — your agent runs CLI commands on your behalf
+The agent skill requires the BananaSplit CLI. Install it first:
 
-The skill teaches your agent to use names, parse JSON output, split expenses correctly, and record payments. You keep control of authentication.
+<Tabs>
+  <Tab title="macOS / Linux">
+    ```bash
+    curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh | sh
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    irm https://github.com/teotti/banana-cli/releases/latest/download/install.ps1 | iex
+    ```
+  </Tab>
+  <Tab title="npm / Bun">
+    ```bash
+    bun install -g @bananasplitapp/cli
+    # or
+    npm install -g @bananasplitapp/cli
+    ```
+  </Tab>
+</Tabs>
+
+Verify it installed:
+
+```bash
+banana --version
+```
+
+## Step 2: Sign in to BananaSplit
+
+```bash
+banana login
+```
+
+This opens your browser. Sign in to your BananaSplit account (or create one) and approve the connection. You only need to do this once — the agent uses your stored credentials.
+
+Verify you're signed in:
+
+```bash
+banana me
+```
+
+## Step 3: Install the skill for your agent
+
+<Tabs>
+  <Tab title="All agents (auto-detect)">
+    ```bash
+    banana skill install
+    ```
+    Installs for Claude Code, Codex, Cursor, Gemini CLI, and opencode if their directories exist.
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    banana skill install --agent claude
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    banana skill install --agent codex
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```bash
+    banana skill install --agent cursor
+    ```
+  </Tab>
+  <Tab title="Gemini CLI">
+    ```bash
+    banana skill install --agent gemini
+    ```
+  </Tab>
+</Tabs>
+
+## Step 4: Verify the setup
+
+```bash
+banana doctor
+```
+
+You should see:
+- `ok` for CLI version
+- `ok` for authentication
+- `ok` for skill installation
+
+## Step 5: Start using it
+
+**Start a new agent session** (important — existing sessions won't load the new skill).
+
+Try one of these prompts:
+
+```
+Check my BananaSplit balances.
+```
+
+```
+Add a €30 lunch expense split equally with Ana.
+```
+
+```
+Show my recent expenses on BananaSplit.
+```
+
+The agent will use the CLI to execute these actions on your account.
+
+## What agents can do
+
+| Action | Example prompt |
+|--------|---------------|
+| Check balances | "What do I owe on BananaSplit?" |
+| Add expense | "Add a €42 dinner expense split with Ana" |
+| Record payment | "I paid Ana €20" |
+| List expenses | "Show my recent expenses" |
+| Create group | "Create a group for our Lisbon trip" |
+| Search | "Find all dinner expenses in the Trip group" |
 
 ## Supported agents
 
-The skill works with any agent that has shell access:
+Works with any agent that has shell access:
 
 - Claude Code
 - Codex
@@ -24,50 +133,9 @@ The skill works with any agent that has shell access:
 - opencode
 - Any shell-enabled agent
 
-## Quick setup
-
-<Tabs>
-  <Tab title="Skills CLI">
-    ```bash
-    npx skills add teotti/banana-cli --skill banana --global
-    ```
-  </Tab>
-  <Tab title="After installing CLI">
-    ```bash
-    banana skill install
-    ```
-    Installs for all detected agents automatically.
-  </Tab>
-</Tabs>
-
-Then sign in:
-
-```bash
-banana login
-```
-
-Start a new agent session and ask: **"Use BananaSplit to check my balances."**
-
-## What agents can do
-
-| Action | Example prompt |
-|--------|---------------|
-| Check balances | "What do I owe?" |
-| Add expense | "Add a €42 dinner expense split with Ana" |
-| Record payment | "I paid Ana €20" |
-| List expenses | "Show my recent expenses" |
-| Create group | "Create a group for our Lisbon trip" |
-| Search activity | "Find all dinner expenses in the Trip group" |
-
 <CardGroup cols={2}>
-  <Card title="Skill installation" icon="download" href="/agents/skill-installation">
-    Detailed setup for each agent.
-  </Card>
-  <Card title="Supported agents" icon="list-check" href="/agents/supported-agents">
-    Full list of compatible agents.
-  </Card>
   <Card title="Example prompts" icon="message" href="/agents/example-prompts">
-    Prompts that work well with the skill.
+    More prompts that work well.
   </Card>
   <Card title="CLI commands" icon="terminal" href="/cli/commands">
     Full command reference.
