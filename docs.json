@@ -40,14 +40,6 @@
         ]
       },
       {
-        "group": "QR Code API",
-        "pages": [
-          "qr-code/overview",
-          "qr-code/endpoints",
-          "qr-code/examples"
-        ]
-      },
-      {
         "group": "MCP",
         "pages": [
           "mcp/overview",
@@ -98,7 +90,18 @@
     "socials": {
       "website": "https://bananasplit.net",
       "github": "https://github.com/teotti/banana-cli"
-    }
+    },
+    "links": [
+      {
+        "title": "Tools",
+        "items": [
+          {
+            "label": "QR Code API",
+            "href": "https://bananasplit.net/qr-code/developers/"
+          }
+        ]
+      }
+    ]
   },
   "seo": {
     "indexHiddenPages": false
