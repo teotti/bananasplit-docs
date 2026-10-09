@@ -1,0 +1,88 @@
+---
+title: MCP setup
+description: Configure AI clients to connect to BananaSplit.
+---
+
+## Claude Desktop
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+```json
+{
+  "mcpServers": {
+    "bananasplit": {
+      "url": "https://api.bananasplit.net/mcp"
+    }
+  }
+}
+```
+
+Restart Claude Desktop. When you first ask about expenses, Claude will prompt you to authorize in your browser.
+
+## Cursor
+
+In Cursor settings, add the MCP server:
+
+1. Open **Settings** → **MCP Servers**
+2. Add a new server with URL: `https://api.bananasplit.net/mcp`
+3. Name it "BananaSplit"
+
+## VS Code with Copilot
+
+Add to your VS Code settings:
+
+```json
+{
+  "mcp.servers": {
+    "bananasplit": {
+      "url": "https://api.bananasplit.net/mcp"
+    }
+  }
+}
+```
+
+## ChatGPT
+
+ChatGPT supports MCP connectors. Add BananaSplit through:
+
+1. **Settings** → **Connectors**
+2. Add custom MCP server: `https://api.bananasplit.net/mcp`
+
+## Generic MCP clients
+
+Any MCP-compatible client can connect using:
+
+| Field | Value |
+|-------|-------|
+| **URL** | `https://api.bananasplit.net/mcp` |
+| **Transport** | HTTP with SSE |
+| **Auth** | OAuth 2.0 (browser consent) |
+
+## First connection
+
+When your AI client first tries to access BananaSplit:
+
+1. A browser window opens automatically
+2. Sign in to BananaSplit if needed
+3. Review the permissions requested
+4. Click **Approve** to grant access
+
+The connection persists across sessions. You can revoke access anytime from your BananaSplit account settings.
+
+## Troubleshooting
+
+### "Connection refused" or timeout
+
+- Check your internet connection
+- Verify the URL is exactly `https://api.bananasplit.net/mcp`
+- Restart your AI client
+
+### Browser doesn't open for auth
+
+- Some clients need manual URL opening — check the client's output for a login URL
+- Ensure your default browser is set correctly
+
+### "Unauthorized" after approving
+
+- The consent may have expired — try reconnecting
+- Check if you denied permissions accidentally

@@ -1,0 +1,46 @@
+---
+title: MCP server
+description: Connect AI clients directly to BananaSplit via Model Context Protocol.
+---
+
+BananaSplit provides an MCP (Model Context Protocol) server that lets AI clients like Claude Desktop, Cursor, and ChatGPT connect directly to your expense data.
+
+## What is MCP?
+
+MCP is an open standard for connecting AI applications to external data sources and tools. Instead of copy-pasting data or using a CLI, your AI assistant connects directly to BananaSplit and can read your expenses, balances, and groups in real-time.
+
+## Server URL
+
+```
+https://api.bananasplit.net/mcp
+```
+
+## Features
+
+With the BananaSplit MCP server, AI clients can:
+
+- **Check balances** — see what you owe and what's owed to you
+- **List expenses** — browse and search your expense history
+- **View groups** — see group members, activity, and splits
+- **Add expenses** — create new expenses with proper splits
+- **Record payments** — log settlements between friends
+
+## Authentication
+
+The MCP server uses OAuth with browser-based consent. When you first connect:
+
+1. Your AI client opens a browser window
+2. You sign in to BananaSplit (if not already)
+3. You approve the connection
+4. The client receives secure access
+
+No API keys or tokens to manage manually.
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="gear" href="/mcp/setup">
+    Configure your AI client to connect.
+  </Card>
+  <Card title="Tools reference" icon="wrench" href="/mcp/tools">
+    Available MCP tools and their parameters.
+  </Card>
+</CardGroup>

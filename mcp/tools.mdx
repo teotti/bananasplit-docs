@@ -1,0 +1,167 @@
+---
+title: MCP tools reference
+description: Available tools in the BananaSplit MCP server.
+---
+
+The BananaSplit MCP server exposes these tools for AI clients.
+
+## Balances
+
+### `get_balances`
+
+Get your current balances across all friends and groups.
+
+**Parameters:** None
+
+**Returns:**
+```json
+{
+  "owed": [
+    {"name": "Ana", "amount": "21.00", "currency": "EUR"}
+  ],
+  "owedToYou": [
+    {"name": "João", "amount": "15.50", "currency": "EUR"}
+  ]
+}
+```
+
+## Expenses
+
+### `list_expenses`
+
+List expenses with optional filtering.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `limit` | number | Max items to return (default: 20) |
+| `cursor` | string | Pagination cursor |
+| `group` | string | Filter by group name |
+| `recurring` | boolean | Filter recurring expenses |
+
+**Returns:** Array of expenses with pagination info.
+
+### `get_expense`
+
+Get details of a specific expense.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID |
+
+### `add_expense`
+
+Create a new expense.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `title` | string | Expense description |
+| `amount` | number | Total amount |
+| `currency` | string | Currency code (EUR, USD, etc.) |
+| `paidBy` | string | Who paid (name or "me") |
+| `group` | string | Group name (optional) |
+| `splits` | object | Split amounts per person |
+| `date` | string | Date (YYYY-MM-DD, optional) |
+
+**Example:**
+```json
+{
+  "title": "Dinner",
+  "amount": 42,
+  "currency": "EUR",
+  "paidBy": "me",
+  "splits": {"me": 21, "Ana": 21}
+}
+```
+
+### `delete_expense`
+
+Delete an expense (soft delete, can be restored).
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID |
+
+## Payments
+
+### `add_payment`
+
+Record a payment between two people.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `amount` | number | Payment amount |
+| `currency` | string | Currency code |
+| `from` | string | Who paid (name or "me") |
+| `to` | string | Who received |
+| `date` | string | Date (optional) |
+| `description` | string | Note (optional) |
+
+## Groups
+
+### `list_groups`
+
+List all your groups.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `limit` | number | Max items (default: 20) |
+
+### `get_group`
+
+Get group details including members and default split.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | string | Group name or ID |
+
+### `create_group`
+
+Create a new group.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `name` | string | Group name |
+| `currency` | string | Default currency |
+| `type` | string | Group type (travel, home, couple, etc.) |
+| `members` | array | Initial members to add |
+
+## Friends
+
+### `list_friends`
+
+List your friends on BananaSplit.
+
+**Parameters:** None
+
+## Account
+
+### `get_me`
+
+Get your account information.
+
+**Parameters:** None
+
+## Error handling
+
+Tools return errors in this format:
+
+```json
+{
+  "error": "Expense not found",
+  "code": "NOT_FOUND"
+}
+```
+
+Common error codes:
+- `NOT_FOUND` — Resource doesn't exist
+- `INVALID_INPUT` — Bad parameters
+- `UNAUTHORIZED` — Auth required or expired
+- `FORBIDDEN` — No permission for this action

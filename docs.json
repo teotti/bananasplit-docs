@@ -43,6 +43,14 @@
           "qr-code/endpoints",
           "qr-code/examples"
         ]
+      },
+      {
+        "group": "MCP",
+        "pages": [
+          "mcp/overview",
+          "mcp/setup",
+          "mcp/tools"
+        ]
       }
     ],
     "global": {
@@ -61,6 +69,11 @@
           "anchor": "QR Code API",
           "href": "/qr-code/overview",
           "icon": "qrcode"
+        },
+        {
+          "anchor": "MCP",
+          "href": "/mcp/overview",
+          "icon": "plug"
         }
       ]
     }
