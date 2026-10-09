@@ -77,8 +77,8 @@
     }
   },
   "logo": {
-    "light": "/images/banana-icon.png",
-    "dark": "/images/banana-icon.png",
+    "light": "/images/bananasplit-logo.svg",
+    "dark": "/images/bnanasplit-logo-yellow.png",
     "href": "https://bananasplit.net/"
   },
   "navbar": {
