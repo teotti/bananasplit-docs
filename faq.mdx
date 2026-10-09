@@ -1,0 +1,120 @@
+---
+title: FAQ
+description: Frequently asked questions about BananaSplit CLI and integrations.
+---
+
+## General
+
+<AccordionGroup>
+  <Accordion title="What is BananaSplit?">
+    BananaSplit is an expense tracking app for splitting costs with friends across vacations, roommates, couples, and group events. Your data syncs across iOS, Android, web, and the CLI.
+  </Accordion>
+
+  <Accordion title="Is BananaSplit free?">
+    Yes, BananaSplit is free to use. The CLI, agent skills, and MCP server are all free.
+  </Accordion>
+
+  <Accordion title="Do I need an account?">
+    Yes. Run `banana login` to sign in or create an account through your browser.
+  </Accordion>
+</AccordionGroup>
+
+## CLI
+
+<AccordionGroup>
+  <Accordion title="Which platforms are supported?">
+    macOS, Linux, and Windows. Install via the standalone binary (no runtime needed) or via npm/Bun.
+  </Accordion>
+
+  <Accordion title="Where are my credentials stored?">
+    - **macOS**: System keychain
+    - **Linux/Windows**: `~/.local/share/banana/credentials.json` (mode 0600)
+
+    Set `BANANASPLIT_NO_KEYCHAIN=1` to use the file store on macOS.
+  </Accordion>
+
+  <Accordion title="How do I update the CLI?">
+    ```bash
+    banana upgrade
+    ```
+  </Accordion>
+
+  <Accordion title="How do I uninstall?">
+    ```bash
+    banana uninstall
+    ```
+    This removes the CLI and revokes your stored credentials.
+  </Accordion>
+
+  <Accordion title="Can I use a different API server?">
+    Yes, for local development:
+    ```bash
+    export BANANASPLIT_API_URL="http://localhost:8080"
+    banana login
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Agent integration
+
+<AccordionGroup>
+  <Accordion title="Which agents are supported?">
+    Any agent with shell access: Claude Code, Codex, Cursor, Gemini CLI, opencode, and others.
+  </Accordion>
+
+  <Accordion title="Do I need to install the skill separately?">
+    Run `banana skill install` after installing the CLI. This installs the skill for all detected agents.
+  </Accordion>
+
+  <Accordion title="Why isn't my agent using the skill?">
+    Start a **new agent session** after installing the skill. Existing sessions don't load new skills.
+  </Accordion>
+
+  <Accordion title="Can the agent access my password?">
+    No. You sign in via `banana login` in your terminal. The agent only uses CLI commands — it never sees your credentials.
+  </Accordion>
+</AccordionGroup>
+
+## MCP
+
+<AccordionGroup>
+  <Accordion title="What is MCP?">
+    Model Context Protocol — an open standard for connecting AI clients directly to data sources. BananaSplit's MCP server lets Claude Desktop, Cursor, and other clients access your expenses without going through the CLI.
+  </Accordion>
+
+  <Accordion title="How do I connect via MCP?">
+    Add `https://api.bananasplit.net/mcp` to your client's MCP server configuration. See [MCP setup](/mcp/setup) for details.
+  </Accordion>
+
+  <Accordion title="Is MCP authentication automatic?">
+    Yes. On first connection, a browser window opens for you to approve access. No tokens to manage.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'banana: command not found'">
+    The CLI isn't in your PATH. Either:
+    - Restart your terminal
+    - Add the install directory to your PATH
+    - Reinstall: `curl -fsSL https://github.com/teotti/banana-cli/releases/latest/download/install.sh | sh`
+  </Accordion>
+
+  <Accordion title="'Unauthorized' or login issues">
+    ```bash
+    banana logout
+    banana login
+    ```
+    This refreshes your credentials.
+  </Accordion>
+
+  <Accordion title="Skill not working with my agent">
+    Run `banana doctor` to check:
+    - CLI is installed correctly
+    - You're signed in
+    - Skill version matches CLI version
+
+    If versions don't match, run `banana skill install --force`.
+  </Accordion>
+</AccordionGroup>
