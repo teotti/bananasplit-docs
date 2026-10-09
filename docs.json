@@ -2,6 +2,10 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
   "name": "BananaSplit Docs",
+  "banner": {
+    "content": "**New:** MCP server now available — [connect your AI client directly](/mcp/overview)",
+    "dismissible": true
+  },
   "colors": {
     "primary": "#7b260f",
     "light": "#ffe66f",
