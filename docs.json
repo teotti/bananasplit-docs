@@ -66,11 +66,6 @@
           "icon": "robot"
         },
         {
-          "anchor": "QR Code API",
-          "href": "/qr-code/overview",
-          "icon": "qrcode"
-        },
-        {
           "anchor": "MCP",
           "href": "/mcp/overview",
           "icon": "plug"
