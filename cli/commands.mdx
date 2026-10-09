@@ -1,144 +1,184 @@
 ---
 title: Commands reference
-description: Full list of BananaSplit CLI commands with examples.
+description: Full list of BananaSplit CLI commands.
 ---
 
-## Account
-
-```bash
-banana login           # Sign in through browser
-banana logout          # Sign out and revoke credentials
-banana me              # Show your account info
-banana doctor          # Check installation and auth status
-banana version         # Show CLI version
-banana upgrade         # Update to latest version
-banana uninstall       # Remove CLI and credentials
+```
+banana <command> [--json | --raw]
 ```
 
 ## Balances
 
 ```bash
-banana balance         # Summary of what you owe / are owed
-banana balances        # Detailed balance breakdown
-```
-
-## Friends
-
-```bash
-banana friends         # List your friends
-```
-
-## Groups
-
-```bash
-banana groups                        # List your groups
-banana groups get "Lisbon trip"      # Group details
-banana groups members "Lisbon trip"  # List members and their splits
-banana groups activities Lisbon      # Activity feed for a group
-banana groups activities Lisbon --search dinner  # Search activities
-
-banana groups create --name "Lisbon trip" --currency EUR \
-  --type travel --member Ana
+banana balance              # Show the aggregate balance
+banana balance users        # Show balances by user
+banana balances             # Alias for `balance users`
 ```
 
 ## Expenses
 
-### List and search
-
 ```bash
-banana expenses list                           # List expenses
-banana expenses list --sort amount --direction desc --limit 10
-banana expenses list --recurring               # Only recurring
-banana expenses list --no-recurring            # Exclude recurring
-banana expenses list --json                    # JSON output with pagination
+banana expenses list                  # List your expenses
+banana expenses add                   # Add an expense
+banana expenses get <expense-id>      # Show an expense
+banana expenses edit <expense-id>     # Edit an expense
+banana expenses delete <expense-id>   # Delete an expense
+banana expenses restore <expense-id>  # Restore a deleted expense
 ```
 
-In interactive terminals, listing opens a searchable browser. Press `Enter` to view details, `Esc` to return, `q` to quit.
-
-### Get, add, edit, delete
+### Adding expenses
 
 ```bash
-banana expenses get EXPENSE_ID
-banana expenses delete EXPENSE_ID
-banana expenses restore EXPENSE_ID
-
 banana expenses add --title "Dinner" --amount 42 --currency EUR \
   --paid-by me --date 2026-09-01 --group "Lisbon trip" \
-  --split-type custom --split me=22 --split Ana=20 --notify-me
-
-banana expenses edit EXPENSE_ID --title "Chinese dinner"
-banana expenses edit EXPENSE_ID --amount 60 --split me=30 --split Ana=30
-banana expenses edit EXPENSE_ID --group "Lisbon trip"
-banana expenses edit EXPENSE_ID '{"description":null}'
+  --split me=22 --split Ana=20
 ```
 
-### Date formats
+| Flag | Description |
+|------|-------------|
+| `--title` | Expense description |
+| `--amount` | Total amount |
+| `--currency` | Currency code (EUR, USD, etc.) |
+| `--paid-by` | Who paid (name or `me`) |
+| `--date` | Date (YYYY-MM-DD or DD-MM-YYYY) |
+| `--group` | Group name (optional) |
+| `--split` | Split amount per person (repeatable) |
+| `--split-type` | `equal` or `custom` |
+| `--notify-me` | Send push notification to yourself |
 
-`--date` accepts `YYYY-MM-DD` or `DD-MM-YYYY`, with optional time after `T`:
+### Listing expenses
 
 ```bash
---date 2026-09-16                    # Midnight UTC
---date 2026-09-16T21:20:00           # UTC time
---date 2026-09-16T21:20:00+02:00     # With timezone offset
+banana expenses list --limit 10
+banana expenses list --sort amount --direction desc
+banana expenses list --group "Lisbon trip"
+banana expenses list --recurring
+banana expenses list --no-recurring
 ```
 
-### Splits
-
-Direct expenses require at least one `--split WHO=AMOUNT`. Group expenses can omit `--split` to use the group's default.
+## Recurring expenses
 
 ```bash
---split me=22 --split Ana=20         # Custom split
---split-type equal                   # Equal split (recalculates on amount change)
+banana recurring list              # List recurring expense rules
+banana recurring add               # Add a recurring expense rule
+banana recurring get <rule-id>     # Show a recurring rule
+banana recurring edit <rule-id>    # Edit or pause a recurring rule
+banana recurring delete <rule-id>  # Delete a recurring rule
 ```
 
 ## Payments
 
 ```bash
-banana payments get PAYMENT_ID
-banana payments restore PAYMENT_ID
+banana payments add                   # Add a payment
+banana payments get <payment-id>      # Show a payment
+banana payments restore <payment-id>  # Restore a deleted payment
+```
 
+### Adding payments
+
+```bash
 banana payments add --amount 20 --currency EUR \
   --from me --to Ana --date 2026-09-01 \
   --description "Settle up"
 ```
 
-## Currencies
+## Groups
 
 ```bash
-banana currencies      # List available currencies
+banana groups                     # List groups
+banana groups create              # Create a group
+banana groups get <group>         # Show a group
+banana groups members <group>     # List group members
+banana groups activities <group>  # List group activities
 ```
 
-## Raw JSON input
-
-Create commands also accept raw JSON:
+### Creating groups
 
 ```bash
-banana groups create '{"name":"Lisbon trip","currencyId":"CURRENCY_ID"}'
-banana expenses add '{"title":"Dinner","amount":"42","currencyId":"CURRENCY_ID",...}'
-banana payments add '{"amount":"20","currencyId":"CURRENCY_ID",...}'
+banana groups create --name "Lisbon trip" --currency EUR \
+  --type travel --member Ana
 ```
 
-This form takes IDs directly instead of names.
+## Friends & currencies
+
+```bash
+banana friends       # List friends
+banana currencies    # List available currencies
+```
+
+## Account
+
+```bash
+banana me            # Show the authenticated user
+banana login         # Sign in with browser
+banana logout        # Revoke and delete credentials
+banana doctor        # Check CLI, login, and agent skill
+banana version       # Print installed version
+banana upgrade       # Upgrade to latest version
+banana update        # Alias for upgrade
+banana uninstall     # Remove CLI and stored login
+```
 
 ## Agent skill
 
 ```bash
-banana skill install           # Install for all detected agents
-banana skill install --agent codex
-banana skill install --list    # Show supported agents
-banana skill install --dir ~/.config/agent/skills
-banana skill install --force   # Replace modified skill
+banana skill install     # Install skill for detected agents
+banana skill uninstall   # Remove the skill
+```
 
-banana skill uninstall         # Remove from all agents
-banana skill uninstall --agent claude
+Options:
+```bash
+banana skill install --agent claude    # Specific agent
+banana skill install --all             # All supported agents
+banana skill install --list            # Show supported agents
+banana skill install --dir <path>      # Custom directory
+banana skill install --force           # Replace modified skill
+banana skill install --print           # Print without installing
+```
+
+## Output formats
+
+| Flag | Description |
+|------|-------------|
+| `--json` | Print curated operational JSON |
+| `--raw` | Print the complete API response |
+
+Flags can appear before or after the command:
+
+```bash
+banana --json balance
+banana balance --json
+```
+
+## Naming
+
+Currencies, groups, and people can be referenced by name, code, or prefix:
+
+```bash
+banana groups get Lisbon          # Matches "Lisbon trip"
+banana expenses add --paid-by me  # You
+banana expenses add --split Ana=20
+```
+
+IDs also work. `me` always refers to you.
+
+## Date formats
+
+`--date` accepts:
+
+```bash
+--date 2026-09-16                    # Midnight UTC
+--date 16-09-2026                    # DD-MM-YYYY also works
+--date 2026-09-16T21:20:00           # With time (UTC)
+--date 2026-09-16T21:20:00+02:00     # With timezone
 ```
 
 ## Help
 
-Every command has its own help page:
+Every command has its own help:
 
 ```bash
 banana --help
 banana expenses --help
-banana expenses edit --help
+banana expenses add --help
 ```
