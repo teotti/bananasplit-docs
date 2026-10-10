@@ -23,34 +23,98 @@ banana balance
 
 ## CLI Commands
 
-- `banana balance` — show what you owe and are owed
-- `banana expenses list` — list expenses
-- `banana expenses add --title "Dinner" --amount 42 --currency EUR --split me=21 --split Ana=21` — add expense
-- `banana payments add --amount 20 --from me --to Ana` — record payment
-- `banana groups` — list groups
-- `banana groups create --name "Trip" --currency EUR` — create group
+### Balances
+- `banana balance` — show aggregate balance (what you owe / are owed)
+- `banana balance users` — show balance per person
+- `banana balances` — alias for balance users
 
-Use `--json` for structured output. Use names instead of IDs.
+### Expenses
+- `banana expenses list` — list recent expenses
+- `banana expenses list --group "Trip"` — filter by group
+- `banana expenses list --limit 20` — limit results
+- `banana expenses add --title "Dinner" --amount 42 --currency EUR --paid-by me --split me=21 --split Ana=21` — add expense
+- `banana expenses add --title "Rent" --amount 1200 --currency USD --split-type equal` — split equally
+- `banana expenses get <id>` — show expense details
+- `banana expenses edit <id> --amount 50` — edit expense
+- `banana expenses delete <id>` — delete expense
+- `banana expenses restore <id>` — restore deleted expense
+
+### Recurring Expenses
+- `banana recurring list` — list recurring rules
+- `banana recurring add --title "Rent" --amount 1200 --frequency monthly` — create recurring expense
+- `banana recurring edit <id> --pause` — pause a recurring rule
+- `banana recurring delete <id>` — delete rule
+
+### Payments
+- `banana payments add --amount 20 --currency EUR --from me --to Ana` — record payment
+- `banana payments add --amount 50 --from Ana --to me --description "Settle up"` — payment with note
+- `banana payments restore <id>` — restore deleted payment
+
+### Groups
+- `banana groups` — list groups
+- `banana groups create --name "Lisbon trip" --currency EUR --type travel` — create group
+- `banana groups get "Trip"` — show group details
+- `banana groups members "Trip"` — list members
+- `banana groups activities "Trip"` — show activity feed
+
+### Other
+- `banana friends` — list friends
+- `banana currencies` — list available currencies
+- `banana me` — show authenticated user
+- `banana doctor` — health check (CLI, login, skill)
+
+## Output Formats
+
+- Default: human-readable tables
+- `--json` — structured JSON for agents
+- `--raw` — complete API response
+
+Example:
+```
+banana balance --json
+```
+
+## Naming
+
+Use names instead of IDs:
+- `--paid-by Ana` instead of `--paid-by USER_ID`
+- `--group "Lisbon trip"` or `--group Lisbon` (prefix match)
+- `--currency EUR` or `--currency Euro`
+- `me` always refers to the authenticated user
 
 ## Agent Integration
 
-Install skill:
+Install skill for AI agents:
 ```
 banana skill install
 ```
 
-Works with: Claude Code, Codex, Cursor, Gemini CLI, opencode.
+Supported agents: Claude Code, Codex, Cursor, Gemini CLI, opencode.
 
 Example prompts:
 - "Check my BananaSplit balances"
-- "Add a €42 dinner expense split with Ana"
+- "Add a €42 dinner expense split equally with Ana"
 - "Show expenses in the Lisbon trip group"
+- "Record a $20 payment from me to John"
+- "Create a new group called Weekend Trip with EUR currency"
+- "List my recurring expenses"
 
 ## MCP Server
 
-URL: https://api.bananasplit.net/mcp
+URL: `https://api.bananasplit.net/mcp`
 
 Connect AI clients (Claude Desktop, Cursor, ChatGPT) directly via Model Context Protocol. OAuth authentication via browser.
+
+Available tools: list_balances, list_expenses, add_expense, add_payment, list_groups, create_group, list_friends.
+
+## Key Concepts
+
+- **Balance**: Net amount owed between you and others
+- **Expense**: Shared cost split among people
+- **Payment**: Settlement transaction to reduce balance
+- **Group**: Container for expenses (travel, home, couple, event)
+- **Split**: How an expense divides (equal or custom amounts)
+- **Recurring**: Expense that repeats on schedule
 
 ## Documentation
 
@@ -59,6 +123,8 @@ Connect AI clients (Claude Desktop, Cursor, ChatGPT) directly via Model Context 
 - Agent setup: https://docs.bananasplit.net/agents/overview
 - MCP setup: https://docs.bananasplit.net/mcp/setup
 - FAQ: https://docs.bananasplit.net/faq
+- Glossary: https://docs.bananasplit.net/glossary
+- Changelog: https://docs.bananasplit.net/changelog
 
 ## Links
 
