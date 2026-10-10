@@ -23,6 +23,7 @@
           "index",
           "quickstart",
           "faq",
+          "glossary",
           "changelog"
         ]
       },
@@ -108,6 +109,13 @@
         ]
       }
     ]
+  },
+  "errors": {
+    "404": {
+      "redirect": false,
+      "title": "Page not found",
+      "description": "This page doesn't exist. Try the [quickstart](/quickstart), [CLI commands](/cli/commands), or use the search above."
+    }
   },
   "seo": {
     "indexHiddenPages": false
