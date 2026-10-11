@@ -1,0 +1,52 @@
+---
+title: Always-on agents
+description: Let Grok Bot or ChatGPT dots manage expenses on a schedule.
+---
+
+Grok Bot and ChatGPT dots are always-on agents that can use BananaSplit automatically — adding expenses when bills arrive, or sending you balance summaries on a schedule.
+
+## How it works
+
+1. **Connect BananaSplit** to Grok or ChatGPT (see [setup](/mcp/setup))
+2. **Create a bot or dot** and give it access to the BananaSplit connector
+3. **Define triggers** — email arrival, calendar events, or time-based schedules
+
+The agent runs in the background and takes action when triggered.
+
+## Setup
+
+### Grok Bot
+
+1. Add BananaSplit at [grok.com/connectors](https://grok.com/connectors) (see [Grok setup](/mcp/setup#grok))
+2. Create a new Grok Bot and give it access to the BananaSplit connector
+3. Define what the bot should do and when
+
+### ChatGPT dots
+
+1. Add BananaSplit through Plugins with Developer mode enabled (see [ChatGPT setup](/mcp/setup#chatgpt))
+2. Create a dot and give it access to the BananaSplit connector
+3. Configure the dot's triggers and instructions
+
+## Example jobs
+
+**Add bills from email:**
+> When the energy bill lands in my email, add it to Flat 3B and split it evenly.
+
+The agent watches your email, extracts the amount and date from the bill, and creates the expense automatically.
+
+**Weekly balance summary:**
+> Every Sunday evening, send me where I stand across all my groups.
+
+The agent checks your balances and sends you a summary — who owes you, who you owe, and in which groups.
+
+**Track subscriptions:**
+> When I get a receipt from Spotify, add it to my personal expenses.
+
+## Limitations
+
+- **No receipt images yet** — the agent adds expenses from email details (amount, date, description), but can't attach receipt photos
+- **Writes aren't idempotent** — if the agent isn't sure whether an expense was created, it should check the group before retrying
+
+## Coming soon
+
+- **Meta Muse** — always-on agent support

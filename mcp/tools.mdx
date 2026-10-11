@@ -3,103 +3,65 @@ title: MCP tools reference
 description: Available tools in the BananaSplit MCP server.
 ---
 
-The BananaSplit MCP server exposes these tools for AI clients.
+The BananaSplit MCP server exposes 26 tools for AI clients.
 
-## Balances
+## Data conventions
 
-### `get_balances`
+Before using the tools, understand these conventions:
 
-Get your current balances across all friends and groups.
+- **References are UUIDs** — use lookup tools (`list_friends`, `list_groups`, `list_currencies`) to find IDs
+- **Amounts are decimal strings** — e.g., `"21.50"`, not `21.5` or `21`
+- **List results are wrapped** — single lists return `{ items: [...] }`
+- **Paginated results include cursor info** — `{ items: [...], nextCursor: "...", hasMore: true }`
+- **Scopes** — all tools require `mcp:read`; creates, updates, deletes, and restores also require `mcp:write`
+
+## Account
+
+### `get_current_user`
+
+Get your account information.
 
 **Parameters:** None
 
-**Returns:**
-```json
-{
-  "owed": [
-    {"name": "Ana", "amount": "21.00", "currency": "EUR"}
-  ],
-  "owedToYou": [
-    {"name": "João", "amount": "15.50", "currency": "EUR"}
-  ]
-}
-```
+### `get_balance`
 
-## Expenses
+Get your total balance summary.
 
-### `list_expenses`
+**Parameters:** None
 
-List expenses with optional filtering.
+**Returns:** Overall amounts you owe and are owed.
 
-**Parameters:**
-| Name | Type | Description |
-|------|------|-------------|
-| `limit` | number | Max items to return (default: 20) |
-| `cursor` | string | Pagination cursor |
-| `group` | string | Filter by group name |
-| `recurring` | boolean | Filter recurring expenses |
+### `get_balance_users`
 
-**Returns:** Array of expenses with pagination info.
+Get balances broken down by person.
 
-### `get_expense`
+**Parameters:** None
 
-Get details of a specific expense.
+**Returns:** Balance details for each friend you have unsettled amounts with.
+
+## Lookups
+
+### `list_currencies`
+
+List available currencies.
 
 **Parameters:**
 | Name | Type | Description |
 |------|------|-------------|
-| `id` | string | Expense ID |
+| `code` | string | Filter by exact currency code (case-insensitive) |
+| `q` | string | Search by code or name substring |
 
-### `add_expense`
+### `list_categories`
 
-Create a new expense.
+List expense categories.
 
-**Parameters:**
-| Name | Type | Description |
-|------|------|-------------|
-| `title` | string | Expense description |
-| `amount` | number | Total amount |
-| `currency` | string | Currency code (EUR, USD, etc.) |
-| `paidBy` | string | Who paid (name or "me") |
-| `group` | string | Group name (optional) |
-| `splits` | object | Split amounts per person |
-| `date` | string | Date (YYYY-MM-DD, optional) |
+**Parameters:** None
 
-**Example:**
-```json
-{
-  "title": "Dinner",
-  "amount": 42,
-  "currency": "EUR",
-  "paidBy": "me",
-  "splits": {"me": 21, "Ana": 21}
-}
-```
+### `list_friends`
 
-### `delete_expense`
+List your friends on BananaSplit.
 
-Delete an expense (soft delete, can be restored).
-
-**Parameters:**
-| Name | Type | Description |
-|------|------|-------------|
-| `id` | string | Expense ID |
-
-## Payments
-
-### `add_payment`
-
-Record a payment between two people.
-
-**Parameters:**
-| Name | Type | Description |
-|------|------|-------------|
-| `amount` | number | Payment amount |
-| `currency` | string | Currency code |
-| `from` | string | Who paid (name or "me") |
-| `to` | string | Who received |
-| `date` | string | Date (optional) |
-| `description` | string | Note (optional) |
+**Parameters:** None
 
 ## Groups
 
@@ -110,16 +72,41 @@ List all your groups.
 **Parameters:**
 | Name | Type | Description |
 |------|------|-------------|
-| `limit` | number | Max items (default: 20) |
+| `l` | number | Limit (default: 25) |
+| `cursor` | string | Pagination cursor |
 
 ### `get_group`
 
-Get group details including members and default split.
+Get group details.
 
 **Parameters:**
 | Name | Type | Description |
 |------|------|-------------|
-| `name` | string | Group name or ID |
+| `id` | string | Group ID (UUID) |
+
+### `list_group_members`
+
+List members of a group.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Group ID (UUID) |
+
+### `list_group_activities`
+
+List activity in a group.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Group ID (UUID) |
+| `q` | string | Search query |
+| `l` | number | Limit |
+| `cursor` | string | Pagination cursor |
+| `type` | string | Filter: `all`, `expenses`, `payments`, `recurring_expenses` |
+| `sort` | string | Sort by: `date`, `amount` |
+| `direction` | string | Sort direction: `asc`, `desc` |
 
 ### `create_group`
 
@@ -129,25 +116,231 @@ Create a new group.
 | Name | Type | Description |
 |------|------|-------------|
 | `name` | string | Group name |
-| `currency` | string | Default currency |
-| `type` | string | Group type (travel, home, couple, etc.) |
-| `members` | array | Initial members to add |
+| `currency` | string | Default currency code |
+| `type` | string | Group type |
 
-## Friends
+<Note>Requires both `mcp:read` and `mcp:write` scopes.</Note>
 
-### `list_friends`
+## Expenses
 
-List your friends on BananaSplit.
+### `list_expenses`
 
-**Parameters:** None
+List expenses with optional filtering.
 
-## Account
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `l` | number | Limit |
+| `cursor` | string | Pagination cursor |
+| `groupId` | string | Filter by group ID |
 
-### `get_me`
+### `get_expense`
 
-Get your account information.
+Get details of a specific expense.
 
-**Parameters:** None
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID (UUID) |
+
+### `create_expense`
+
+Create a new expense.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `description` | string | Expense description |
+| `amount` | string | Total amount (decimal string) |
+| `currency` | string | Currency code |
+| `paidById` | string | User ID of who paid |
+| `groupId` | string | Group ID (optional) |
+| `splits` | array | Split amounts per person |
+| `date` | string | Date (ISO format, optional) |
+| `categoryId` | string | Category ID (optional) |
+| `automated` | boolean | Mark as automated (optional) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Not idempotent — don't retry automatically after unclear failures.</Note>
+
+### `update_expense`
+
+Update an existing expense.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID (UUID) |
+| `description` | string | New description (optional) |
+| `amount` | string | New amount (optional) |
+| `date` | string | New date (optional) |
+| Other fields | — | Other editable fields |
+
+Omitted fields keep their current values. Amount changes recalculate equal splits.
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Not idempotent.</Note>
+
+### `delete_expense`
+
+Delete an expense (soft delete).
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID (UUID) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Can be restored with `restore_expense`.</Note>
+
+### `restore_expense`
+
+Restore a deleted expense.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Expense ID (UUID) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Idempotent — restoring an active record is a no-op.</Note>
+
+## Payments
+
+### `get_payment`
+
+Get details of a specific payment.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Payment ID (UUID) |
+
+### `preview_payment`
+
+Preview a payment before creating it.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `fromId` | string | User ID of who is paying |
+| `toId` | string | User ID of who is receiving |
+| `amount` | string | Payment amount (decimal string) |
+| `currency` | string | Currency code |
+| `groupId` | string | Group ID (optional) |
+
+### `create_payment`
+
+Record a payment between two people.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `fromId` | string | User ID of who paid |
+| `toId` | string | User ID of who received |
+| `amount` | string | Payment amount (decimal string) |
+| `currency` | string | Currency code |
+| `groupId` | string | Group ID (optional) |
+| `date` | string | Date (optional) |
+| `note` | string | Note (optional) |
+| `automated` | boolean | Mark as automated (optional) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Not idempotent.</Note>
+
+### `restore_payment`
+
+Restore a deleted payment.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Payment ID (UUID) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes. Idempotent.</Note>
+
+## Recurring expenses
+
+### `list_recurring_expenses`
+
+List recurring expense rules.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `l` | number | Limit (default: 25) |
+| `cursor` | string | Pagination cursor |
+| `status` | string | Filter: `all`, `active`, `inactive` (default: all) |
+
+### `get_recurring_expense`
+
+Get details of a recurring expense rule.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Recurring expense ID (UUID) |
+
+**Returns:** Rule details including shares, next occurrence, and related expenses.
+
+### `create_recurring_expense`
+
+Create a recurring expense rule.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `description` | string | Description |
+| `amount` | string | Amount (decimal string) |
+| `currency` | string | Currency code |
+| `groupId` | string | Group ID |
+| `interval` | number | Recurrence interval (default: 1) |
+| `frequency` | string | Frequency (e.g., `monthly`) |
+| `startDate` | string | Start date |
+| `endDate` | string | End date (optional) |
+| `splits` | array | Split configuration (optional) |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes.</Note>
+
+### `update_recurring_expense`
+
+Update a recurring expense rule.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Recurring expense ID (UUID) |
+| `active` | boolean | Set to `false` to pause, `true` to resume |
+| Other fields | — | Other editable fields |
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes.</Note>
+
+### `delete_recurring_expense`
+
+Delete a recurring expense rule.
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `id` | string | Recurring expense ID (UUID) |
+
+Deleting a rule keeps generated expenses but removes their association with the rule.
+
+<Note>Requires both `mcp:read` and `mcp:write` scopes.</Note>
+
+## Writing data
+
+Creates and updates are **not idempotent**. If a write fails ambiguously (timeout, network error), don't automatically retry. Check the record or balances first to see if it went through.
+
+Deletes are **soft** — records can be restored. The restore tools bring deleted records back. Restoring an already-active record is a no-op.
+
+The `automated` boolean on `create_expense` and `create_payment` marks records as created by automation. This appears in the record's origin field.
+
+## Not exposed
+
+The following are not available through MCP:
+
+- Uploads (receipt photos)
+- Editing or deleting payments
+- Admin tools
+- Prompts and subscriptions
+
+Use the app or CLI for these.
 
 ## Error handling
 
@@ -161,7 +354,7 @@ Tools return errors in this format:
 ```
 
 Common error codes:
-- `NOT_FOUND` — Resource doesn't exist
-- `INVALID_INPUT` — Bad parameters
-- `UNAUTHORIZED` — Auth required or expired
-- `FORBIDDEN` — No permission for this action
+- `NOT_FOUND` — resource doesn't exist
+- `INVALID_INPUT` — bad parameters
+- `UNAUTHORIZED` — re-authenticate
+- `FORBIDDEN` — no permission (check scopes)

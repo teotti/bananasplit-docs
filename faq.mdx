@@ -79,15 +79,19 @@ description: Frequently asked questions about BananaSplit CLI and integrations.
 
 <AccordionGroup>
   <Accordion title="What is MCP?">
-    Model Context Protocol — an open standard for connecting AI clients directly to data sources. BananaSplit's MCP server lets Claude Desktop, Cursor, and other clients access your expenses without going through the CLI.
+    Model Context Protocol — an open standard for connecting AI clients directly to data sources. BananaSplit's MCP server lets Claude, ChatGPT, Grok, Cursor, and other clients access your expenses without going through the CLI.
   </Accordion>
 
   <Accordion title="How do I connect via MCP?">
-    Add `https://api.bananasplit.net/mcp` to your client's MCP server configuration. See [MCP setup](/mcp/setup) for details.
+    Add BananaSplit as a connector in your AI client using the server URL `https://api.bananasplit.net/mcp`. See [MCP setup](/mcp/setup) for client-specific instructions.
   </Accordion>
 
   <Accordion title="Is MCP authentication automatic?">
-    Yes. On first connection, a browser window opens for you to approve access. No tokens to manage.
+    Yes. On first connection, a browser window opens for you to sign in and approve access. No tokens to manage.
+  </Accordion>
+
+  <Accordion title="What can MCP clients do?">
+    Almost everything: check balances, manage expenses, record payments, view and create groups, and handle recurring expenses. See [MCP tools](/mcp/tools) for the full list. Receipt uploads and payment editing aren't available yet — use the app for those.
   </Accordion>
 </AccordionGroup>
 

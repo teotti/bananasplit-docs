@@ -3,9 +3,66 @@ title: MCP setup
 description: Configure AI clients to connect to BananaSplit.
 ---
 
-## Claude Desktop
+## Claude
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+In the Claude app or on claude.ai:
+
+1. Open **Customize** → **Connectors**
+2. Click **+** and choose **Add custom connector**
+3. Name it "BananaSplit" and paste the server URL: `https://api.bananasplit.net/mcp`
+4. Sign in to BananaSplit and approve access
+
+On Claude Team or Enterprise plans, an owner adds BananaSplit once under **Organization settings** → **Connectors**. Each person then connects their own BananaSplit account.
+
+## ChatGPT
+
+1. Go to **Settings** → **Security and login** and turn on **Developer mode**
+2. Open **Plugins**, click **+**, name it "BananaSplit", and paste the server URL
+3. When asked how to sign in, choose **OAuth**
+4. Sign in to BananaSplit and approve access
+
+To use it, start a new chat, choose **Developer mode** from the **+** menu, and pick BananaSplit.
+
+<Note>On Business, Enterprise, and Edu plans, an admin may need to enable Developer mode first.</Note>
+
+## Grok
+
+1. Go to [grok.com/connectors](https://grok.com/connectors)
+2. Click **New Connector** and choose **Custom**
+3. Paste the server URL: `https://api.bananasplit.net/mcp`
+
+This also works in Grok Bot.
+
+## Claude Code
+
+Run this command to add the MCP server:
+
+```bash
+claude mcp add --transport http bananasplit https://api.bananasplit.net/mcp
+```
+
+Then run `/mcp` in Claude Code to sign in to BananaSplit.
+
+## VS Code
+
+Run **MCP: Add Server** from the Command Palette, choose **HTTP**, and paste the server URL.
+
+Or add it to your `mcp.json`:
+
+```json
+{
+  "servers": {
+    "bananasplit": {
+      "type": "http",
+      "url": "https://api.bananasplit.net/mcp"
+    }
+  }
+}
+```
+
+## Cursor
+
+Add to `~/.cursor/mcp.json`:
 
 ```json
 {
@@ -17,46 +74,34 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
-Restart Claude Desktop. When you first ask about expenses, Claude will prompt you to authorize in your browser.
-
-## Cursor
-
-In Cursor settings, add the MCP server:
-
-1. Open **Settings** → **MCP Servers**
-2. Add a new server with URL: `https://api.bananasplit.net/mcp`
-3. Name it "BananaSplit"
-
-## VS Code with Copilot
-
-Add to your VS Code settings:
-
-```json
-{
-  "mcp.servers": {
-    "bananasplit": {
-      "url": "https://api.bananasplit.net/mcp"
-    }
-  }
-}
-```
-
-## ChatGPT
-
-ChatGPT supports MCP connectors. Add BananaSplit through:
-
-1. **Settings** → **Connectors**
-2. Add custom MCP server: `https://api.bananasplit.net/mcp`
-
-## Generic MCP clients
+## Other MCP clients
 
 Any MCP-compatible client can connect using:
 
 | Field | Value |
 |-------|-------|
 | **URL** | `https://api.bananasplit.net/mcp` |
-| **Transport** | HTTP with SSE |
-| **Auth** | OAuth 2.0 (browser consent) |
+| **Transport** | Streamable HTTP (POST only) |
+| **Auth** | OAuth 2.0 with PKCE S256 |
+
+## Authentication details
+
+The MCP server uses OAuth 2.0 with PKCE (S256 challenge method).
+
+**Scopes:**
+- `mcp:read` — read account, balances, expenses, payments, groups, and lookups
+- `mcp:write` — create, update, delete, and restore records (requires `mcp:read` too)
+- `offline_access` — refresh tokens for persistent access
+
+**Tokens:**
+- Access tokens expire after 15 minutes
+- Refresh tokens expire after 30 days and rotate on every use
+
+**Client registration:**
+- Client ID Metadata Documents (CIMD) are supported — use an HTTPS metadata URL as your `client_id`
+- Dynamic client registration is also available
+
+**Rate limit:** 20 requests per minute per user.
 
 ## First connection
 
@@ -71,7 +116,19 @@ The connection persists across sessions. You can revoke access anytime from your
 
 ## Troubleshooting
 
-### "Connection refused" or timeout
+### 401 Unauthorized
+
+Your token expired or was revoked. Re-authenticate by triggering a new connection from your client.
+
+### 403 Forbidden (scope challenge)
+
+The client doesn't have the required scope for this action. Creates, updates, deletes, and restores require both `mcp:read` and `mcp:write` scopes.
+
+### 405 Method Not Allowed
+
+The endpoint only accepts POST requests. GET and DELETE on `/mcp` return 405.
+
+### Connection refused or timeout
 
 - Check your internet connection
 - Verify the URL is exactly `https://api.bananasplit.net/mcp`
@@ -79,10 +136,4 @@ The connection persists across sessions. You can revoke access anytime from your
 
 ### Browser doesn't open for auth
 
-- Some clients need manual URL opening — check the client's output for a login URL
-- Ensure your default browser is set correctly
-
-### "Unauthorized" after approving
-
-- The consent may have expired — try reconnecting
-- Check if you denied permissions accidentally
+Some clients need manual URL opening — check the client's output for a login URL.
