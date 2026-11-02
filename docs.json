@@ -3,7 +3,7 @@
   "theme": "maple",
   "name": "BananaSplit Docs",
   "banner": {
-    "content": "**New:** MCP server now available — [connect your AI client directly](/mcp/overview)",
+    "content": "**New:** BananaSplit is now in the Claude directory — [connect in two clicks](/mcp/setup#claude)",
     "dismissible": true
   },
   "colors": {

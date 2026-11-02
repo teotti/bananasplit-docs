@@ -103,9 +103,11 @@ Example prompts:
 
 URL: `https://api.bananasplit.net/mcp`
 
-Connect AI clients (Claude Desktop, Cursor, ChatGPT) directly via Model Context Protocol. OAuth authentication via browser.
+Connect AI clients (Claude, ChatGPT, Grok, Cursor, VS Code, Claude Code) directly via Model Context Protocol. OAuth authentication via browser.
 
-Available tools: list_balances, list_expenses, add_expense, add_payment, list_groups, create_group, list_friends.
+Claude: BananaSplit is an approved connector in the Claude directory — https://claude.ai/directory/bananasplit (click Connect to Claude, then Allow).
+
+Available tools: get_current_user, get_balance, get_balance_users, list_currencies, list_categories, list_friends, list_groups, get_group, list_group_members, list_group_activities, create_group, list_expenses, get_expense, create_expense, update_expense, delete_expense, restore_expense, get_payment, preview_payment, create_payment, restore_payment, list_recurring_expenses, get_recurring_expense, create_recurring_expense, update_recurring_expense, delete_recurring_expense.
 
 ## Key Concepts
 
